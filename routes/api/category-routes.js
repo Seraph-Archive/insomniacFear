@@ -32,14 +32,40 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
+  Category.create(
+    {
+      category_name: req.body.category_name
+    }
+  ).then(data => res.json(data))
 });
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
+  Category.update(
+    {
+      category_name: req.body.category_name
+    },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  ).then(data => { if(!data) {
+    res.status(404).json({message: 'No category with that ID.'})
+  } res.json(data)})
 });
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
+  Category.destroy(
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  ).then(data => { if(!data) {
+    res.status(404).json({message: 'No category with that ID.'})
+  } res.json(data)})
 });
 
 module.exports = router;
